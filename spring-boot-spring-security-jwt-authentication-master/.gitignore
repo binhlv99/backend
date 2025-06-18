@@ -1,0 +1,9 @@
+
+target/
+.idea/
+*.class
+*.war
+*.png
+image/
+*.webp
+*.iml
