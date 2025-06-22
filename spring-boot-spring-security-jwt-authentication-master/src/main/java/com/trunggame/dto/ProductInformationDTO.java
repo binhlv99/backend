@@ -1,6 +1,6 @@
 package com.trunggame.dto;
 
-import com.trunggame.models.GameServerGroup;
+import com.trunggame.models.CountryGroup;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class GameInformationDTO {
+public class ProductInformationDTO {
     private Long id;
     private String name;
     private String description;
@@ -35,7 +35,7 @@ public class GameInformationDTO {
     private String descriptionEn;
     private String gamePriority;
     private List<String> tags;
-    private List<GamePackageDTO> gamePackages;
-    private List<GameServerGroup> server;
+    private List<PackageDTO> gamePackages;
+    private List<CountryGroup> server;
 
 }

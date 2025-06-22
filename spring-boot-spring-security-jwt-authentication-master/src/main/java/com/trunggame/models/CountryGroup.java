@@ -15,23 +15,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "`game_stock`")
-public class GameStock {
+@Table(name = "`country_group`")
+public class CountryGroup {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "game_id", nullable = false)
-    private Integer gameId;
+    private Long gameId;
 
-    @Column(name = "quantity",nullable = false)
-    private Integer quantity;
+    private Long packageId;
+
+    private String name;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }
-

@@ -1,10 +1,10 @@
 package com.trunggame.dto;
 
 import com.trunggame.models.*;
+import com.trunggame.models.Package;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @Builder
@@ -19,10 +19,10 @@ public class OrderInfoDetailDTO {
     private BigDecimal amount;
     private BigDecimal price;
     private Long packageId;
-    private GameOrder gameOrder;
-    private Game game;
-    private GamePackage gamePackage;
-    private GameCategories gameCategories;
+    private Order order;
+    private Product product;
+    private Package aPackage;
+    private Categories categories;
     private String server;
     private String loginType;
     private String password;

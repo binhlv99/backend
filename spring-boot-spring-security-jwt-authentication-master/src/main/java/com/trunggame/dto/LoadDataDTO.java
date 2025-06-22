@@ -14,12 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 public class LoadDataDTO {
 
-    private List<GameInformationDTO> listGame;
+    private List<ProductInformationDTO> listGame;
     private List<BannerDTO> banners;
     private List<Post> posts;
-    private List<GameInformationDTO> newGames;
-    private List<GamePackageDTO> topSale;
-    private List<GamePackageDTO> newPackage;
-    private List<GamePackageDTO> bestSale;
-    private List<GamePackageDTO> packages;
+    private List<ProductInformationDTO> newGames;
+    private List<PackageDTO> topSale;
+    private List<PackageDTO> newPackage;
+    private List<PackageDTO> bestSale;
+    private List<PackageDTO> packages;
 }

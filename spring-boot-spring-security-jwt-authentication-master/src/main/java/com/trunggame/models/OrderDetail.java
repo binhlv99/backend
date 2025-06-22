@@ -14,16 +14,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "`game_order_detail`")
-public class GameOrderDetail {
+@Table(name = "`order_detail`")
+public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "game_order_id", nullable = false)
+    @Column(name = "order_id", nullable = false)
     private Long gameOrderId;
 
-    @Column(name = "game_id", nullable = false)
+    @Column(name = "product_id", nullable = false)
     private Long gameId;
 
     @Column(name = "quantity")

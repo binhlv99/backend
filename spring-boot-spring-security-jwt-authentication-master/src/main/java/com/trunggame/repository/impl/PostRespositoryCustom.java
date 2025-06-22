@@ -1,8 +1,7 @@
 package com.trunggame.repository.impl;
 
 import com.trunggame.dto.BannerDTO;
-import com.trunggame.dto.GamePackageDTO;
-import com.trunggame.models.Banner;
+import com.trunggame.dto.PackageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,14 +14,14 @@ public class PostRespositoryCustom {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public List<GamePackageDTO> getAllPackage() {
+    public List<PackageDTO> getAllPackage() {
 
-        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url  from game_package gp \n" +
+        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url  from package gp \n" +
                         "\tjoin file f on f.uniq_id  =gp.image_id ";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GamePackageDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> PackageDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))

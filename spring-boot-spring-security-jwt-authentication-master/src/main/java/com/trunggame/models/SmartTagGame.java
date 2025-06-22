@@ -22,7 +22,7 @@ public class SmartTagGame {
     @Column(name = "smart_tag_id", nullable = false)
     private Long smartTagId;
 
-    @Column(name = "game_id", nullable = false)
+    @Column(name = "product_id", nullable = false)
     private Long gameId;
 
 }

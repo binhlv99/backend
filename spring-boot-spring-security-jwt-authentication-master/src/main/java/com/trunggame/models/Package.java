@@ -15,8 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "`game_package`")
-public class GamePackage {
+@Table(name = "`package`")
+public class Package {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +52,7 @@ public class GamePackage {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private GamePackage.Status status = GamePackage.Status.ACTIVE;
+    private Package.Status status = Package.Status.ACTIVE;
 
     @Column(name = "image_id")
     private String imageId;
@@ -61,7 +61,7 @@ public class GamePackage {
     private String previewUrl;
 
     @Transient
-    private List<GameServerGroup> server;
+    private List<CountryGroup> server;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -71,7 +71,7 @@ public class GamePackage {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private GamePackage.TopSaleStatus topSale = TopSaleStatus.INACTIVE;
+    private Package.TopSaleStatus topSale = TopSaleStatus.INACTIVE;
 
     public enum Status {
         ACTIVE,

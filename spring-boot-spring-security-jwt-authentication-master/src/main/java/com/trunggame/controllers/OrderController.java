@@ -1,9 +1,9 @@
 package com.trunggame.controllers;
 
 import com.trunggame.dto.*;
-import com.trunggame.models.GameOrder;
-import com.trunggame.repository.GameOrderRepository;
-import com.trunggame.security.services.GameOrderService;
+import com.trunggame.models.Order;
+import com.trunggame.repository.OrderRepository;
+import com.trunggame.security.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +17,10 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    private GameOrderService orderService;
+    private OrderService orderService;
 
     @Autowired
-    private GameOrderRepository gameOrderRepository;
+    private OrderRepository orderRepository;
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
@@ -30,7 +30,7 @@ public class OrderController {
 
     @PostMapping("/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public GameOrder updateOrder(@PathVariable Long id, @RequestBody OrderInfoDTO orderInfoDTO) {
+    public Order updateOrder(@PathVariable Long id, @RequestBody OrderInfoDTO orderInfoDTO) {
         return orderService.updateOrder(id, orderInfoDTO);
     }
 
@@ -48,19 +48,19 @@ public class OrderController {
                 .pageNumber(getOrderDTO.getPageNumber())
                 .pageSize(getOrderDTO.getPageSize())
                 .code(getOrderDTO.getCode())
-                .totalData(gameOrderRepository.count()).build();
+                .totalData(orderRepository.count()).build();
         return dto;
     }
 
     @GetMapping("/filter")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    public List<GameOrder> getAllOrdersByUserName(@ModelAttribute GetOrderDTO getOrderDTO) {
+    public List<Order> getAllOrdersByUserName(@ModelAttribute GetOrderDTO getOrderDTO) {
         return orderService.getAllOrdersByUserName(getOrderDTO);
     }
 
     @GetMapping("/check-order")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<GameOrder> getCheckOrder() {
+    public List<Order> getCheckOrder() {
         return orderService.getCheckOrder();
     }
 

@@ -4,7 +4,7 @@ package com.trunggame.controllers;
 import com.trunggame.dto.BaseResponseDTO;
 import com.trunggame.dto.CategoryInputDTO;
 import com.trunggame.enums.ECategoryStatus;
-import com.trunggame.models.GameCategories;
+import com.trunggame.models.Categories;
 import com.trunggame.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,14 +23,14 @@ public class CategoryController {
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponseDTO<GameCategories> createCategory(@RequestBody CategoryInputDTO dto) {
+    public BaseResponseDTO<Categories> createCategory(@RequestBody CategoryInputDTO dto) {
 
         var gcOTP = categoryRepository.findFirstByName(dto.getName());
         if (gcOTP.isPresent()) {
             return new BaseResponseDTO<>("duplicated category", 400, 400, null);
         }
 
-        var gc = GameCategories.builder()
+        var gc = Categories.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .parentId(dto.getParentCategoryId())
@@ -47,19 +47,19 @@ public class CategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     public BaseResponseDTO<?> updateCategory(@RequestBody CategoryInputDTO dto) {
         if (dto.getId() == null) {
-            return new BaseResponseDTO<GameCategories>("Id can not be null", 400, 400, null);
+            return new BaseResponseDTO<Categories>("Id can not be null", 400, 400, null);
         }
 
         if (dto.getParentCategoryId() != null && dto.getParentCategoryId() != 0) {
             var parent = categoryRepository.findById(dto.getParentCategoryId());
             if (parent.isEmpty()) {
-                return new BaseResponseDTO<GameCategories>("Parent category does not exist", 400, 400, null);
+                return new BaseResponseDTO<Categories>("Parent category does not exist", 400, 400, null);
             }
         }
 
         var gcExisted = categoryRepository.findOneByNameAndStatus(dto.getName(), ECategoryStatus.ACTIVE);
         if (gcExisted.isPresent() && gcExisted.get().getId() != dto.getId()) {
-            return new BaseResponseDTO<GameCategories>("Category's name does exist", 400, 400, null);
+            return new BaseResponseDTO<Categories>("Category's name does exist", 400, 400, null);
         }
 
         var gcOTP = categoryRepository.findById(dto.getId());
@@ -73,7 +73,7 @@ public class CategoryController {
             return new BaseResponseDTO<>("Success", 200, 200, result);
         }
 
-        return new BaseResponseDTO<GameCategories>("Content not found", 400, 400, null);
+        return new BaseResponseDTO<Categories>("Content not found", 400, 400, null);
     }
 
 
@@ -81,7 +81,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     public BaseResponseDTO<?> deleteCategory(@RequestParam Long id) {
         if (id == null) {
-            return new BaseResponseDTO<GameCategories>("Id can not be null", 400, 400, null);
+            return new BaseResponseDTO<Categories>("Id can not be null", 400, 400, null);
         }
 
         var gcOTP = categoryRepository.findById(id);
@@ -99,10 +99,10 @@ public class CategoryController {
 
             categoryRepository.delete(entity);
 
-            return new BaseResponseDTO<GameCategories>("Success", 200, 200, result);
+            return new BaseResponseDTO<Categories>("Success", 200, 200, result);
         }
 
-        return new BaseResponseDTO<GameCategories>("Content not found", 400, 400, null);
+        return new BaseResponseDTO<Categories>("Content not found", 400, 400, null);
     }
 
 

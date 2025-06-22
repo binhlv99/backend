@@ -1,7 +1,6 @@
 package com.trunggame.repository.impl;
 
-import com.trunggame.dto.GameInformationDTO;
-import com.trunggame.models.GamePackage;
+import com.trunggame.dto.ProductInformationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,13 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class GameRepositoryCustom {
+public class ProductRepositoryCustom {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
 
-    public List<GameInformationDTO> getAllInformation() {
+    public List<ProductInformationDTO> getAllInformation() {
 
         String sql =
                 "SELECT distinct s.id," +
@@ -39,13 +38,13 @@ public class GameRepositoryCustom {
                         "       s.game_priority AS gamePriority" +
                         "       FROM game AS s" +
                         "           LEFT JOIN file AS f ON f.uniq_id = s.thumbnail" +
-                        "           JOIN game_categories AS gc ON gc.id = s.category_id" +
+                        "           JOIN categories AS gc ON gc.id = s.category_id" +
                         "           LEFT JOIN price AS p ON p.game_id = s.id" +
                         "       where gc.status = 'ACTIVE' ";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GameInformationDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> ProductInformationDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
@@ -68,7 +67,7 @@ public class GameRepositoryCustom {
                 .gamePriority(rs.getString("gamePriority"))
                 .build());
     }
-    public List<GameInformationDTO> getActiveGame() {
+    public List<ProductInformationDTO> getActiveGame() {
 
         String sql =
                 "SELECT distinct s.id," +
@@ -92,13 +91,13 @@ public class GameRepositoryCustom {
                         "       s.game_priority AS gamePriority" +
                         "       FROM game AS s" +
                         "           LEFT JOIN file AS f ON f.uniq_id = s.thumbnail" +
-                        "           JOIN game_categories AS gc ON gc.id = s.category_id" +
+                        "           JOIN categories AS gc ON gc.id = s.category_id" +
                         "           LEFT JOIN price AS p ON p.game_id = s.id" +
                         "       where s.status = 'ACTIVE' ";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GameInformationDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> ProductInformationDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
@@ -122,7 +121,7 @@ public class GameRepositoryCustom {
                 .build());
     }
 
-    public List<GameInformationDTO> getNewGamge() {
+    public List<ProductInformationDTO> getNewGamge() {
 
         String sql =
                 "SELECT distinct s.id," +
@@ -146,14 +145,14 @@ public class GameRepositoryCustom {
                         "       gc.created_at " +
                         "       FROM game AS s" +
                         "           LEFT JOIN file AS f ON f.uniq_id = s.thumbnail " +
-                        "           JOIN game_categories AS gc ON gc.id = s.category_id" +
+                        "           JOIN categories AS gc ON gc.id = s.category_id" +
                         "           LEFT JOIN price AS p ON p.game_id = s.id" +
                        "        where s.status = 'ACTIVE' " +
                         "and s.game_priority ='3'";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GameInformationDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> ProductInformationDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))

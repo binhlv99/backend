@@ -1,6 +1,6 @@
 package com.trunggame.dto;
 
-import com.trunggame.models.GameOrder;
+import com.trunggame.models.Order;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -27,6 +27,6 @@ public class GetOrderDTO {
     private Long customerId;
     private String status;
     private BigDecimal totalAmount;
-    private List<GameOrder> orderList;
+    private List<Order> orderList;
     private Long totalData;
 }

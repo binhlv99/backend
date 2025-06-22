@@ -18,8 +18,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "`game_categories`")
-public class GameCategories {
+@Table(name = "`categories`")
+public class Categories {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,5 @@
 package com.trunggame.repository.impl;
 
-import com.trunggame.dto.GameInformationDTO;
 import com.trunggame.dto.OrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,8 +18,8 @@ public class OrderRepositoryCustom {
 
         String sql =
                 "select coalesce(sum(total_amount),0) total_amount_trade ," +
-                        "count(id)  success_count, (select count(od.id) from game_order od where od.customer_id = "+customerId+") trade_count " +
-                    "from game_order where  status = '3' and customer_id = "+customerId;
+                        "count(id)  success_count, (select count(od.id) from order od where od.customer_id = "+customerId+") trade_count " +
+                    "from order where  status = '3' and customer_id = "+customerId;
 
         System.out.println(sql);
 

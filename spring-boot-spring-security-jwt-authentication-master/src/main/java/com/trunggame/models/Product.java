@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "game")
+@Table(name = "product")
 @Data
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Game {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -63,7 +63,7 @@ public class Game {
     @Column(name = "marketType")
     private String marketType;
 
-    @Column(name = "gamePriority")
+    @Column(name = "productPriority")
     private String gamePriority;
 
     @Column(name = "companyName",length = 10000, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")

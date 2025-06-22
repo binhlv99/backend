@@ -1,6 +1,6 @@
 package com.trunggame.repository.impl;
 
-import com.trunggame.dto.GamePackageDTO;
+import com.trunggame.dto.PackageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,14 +13,14 @@ public class PackageRepositoryImpl {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public List<GamePackageDTO> getAllPackage() {
+    public List<PackageDTO> getAllPackage() {
 
-        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url ,gp.status, gp.top_sale from game_package gp \n" +
+        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url ,gp.status, gp.top_sale from package gp \n" +
                         "\tjoin file f on f.uniq_id  =gp.image_id ";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GamePackageDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> PackageDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
@@ -38,14 +38,14 @@ public class PackageRepositoryImpl {
                 .gameId(rs.getLong("game_id"))
                 .build());
     }
-    public List<GamePackageDTO> getAllActivePackage() {
+    public List<PackageDTO> getAllActivePackage() {
 
-        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url ,gp.status, gp.top_sale from game_package gp \n" +
+        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url ,gp.status, gp.top_sale from package gp \n" +
                         "\tjoin file f on f.uniq_id  =gp.image_id join game g on g.id = gp.game_id where g.status = 'ACTIVE' and gp.status= 'ACTIVE'";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GamePackageDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> PackageDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
@@ -64,18 +64,18 @@ public class PackageRepositoryImpl {
                 .build());
     }
 
-    public List<GamePackageDTO> getTopSale() {
+    public List<PackageDTO> getTopSale() {
 
-        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url ,ser.server from game_package gp \n" +
+        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url ,ser.server from package gp \n" +
                 "\tjoin file f on f.uniq_id  = gp.image_id join game g on g.id = gp.game_id " +
                 "left join (SELECT package_id,\n" +
                 "   GROUP_CONCAT(name SEPARATOR ', ') server\n" +
-                "FROM game_server_group gsg   \n" +
+                "FROM country_group gsg   \n" +
                 "GROUP BY package_id) ser on ser.package_id = gp.id where gp.top_sale = 'ACTIVE' and g.status = 'ACTIVE' ";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GamePackageDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> PackageDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
@@ -89,19 +89,19 @@ public class PackageRepositoryImpl {
                 .previewUrl(rs.getString("preview_url"))
                 .build());
     }
-    public List<GamePackageDTO> getPackageByGameId(Long gameId) {
+    public List<PackageDTO> getPackageByGameId(Long gameId) {
 
 
-        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url ,ser.server from game_package gp \n" +
+        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url ,ser.server from package gp \n" +
                 "\tjoin file f on f.uniq_id = gp.image_id join game g on g.id = gp.game_id " +
                 "left join (SELECT package_id,\n" +
                 "   GROUP_CONCAT(name SEPARATOR ', ') server\n" +
-                "FROM game_server_group gsg   \n" +
+                "FROM country_group gsg   \n" +
                 "GROUP BY package_id) ser on ser.package_id = gp.id where gp.status = 'ACTIVE' and g.status = 'ACTIVE' and gp.game_id = "+gameId;
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GamePackageDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> PackageDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
@@ -118,18 +118,18 @@ public class PackageRepositoryImpl {
                 .listServer(rs.getString("server"))
                 .build());
     }
-    public List<GamePackageDTO> getNewPackage() {
+    public List<PackageDTO> getNewPackage() {
 
-        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url, ser.server  from game_package gp \n" +
+        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url, ser.server  from package gp \n" +
                 "\tjoin file f on f.uniq_id  =gp.image_id join game g on g.id = gp.game_id" +
                 " left join (SELECT package_id,\n" +
                 "   GROUP_CONCAT(name SEPARATOR ', ') server\n" +
-                "FROM game_server_group gsg   \n" +
+                "FROM country_group gsg   \n" +
                 "GROUP BY package_id) ser on ser.package_id = gp.id where gp.status = 'ACTIVE' and g.status = 'ACTIVE' order by gp.created_at desc limit 10";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GamePackageDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> PackageDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
@@ -147,18 +147,18 @@ public class PackageRepositoryImpl {
                 .build());
     }
 
-    public List<GamePackageDTO> getBestSale() {
+    public List<PackageDTO> getBestSale() {
 
-        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url, ser.server  from game_package gp\n" +
+        String sql = "SELECT   gp.id ,gp.description_vi,gp.description_en ,gp.attribute ,gp.game_id ,gp.name ,gp.price ,gp.rating ,gp.warehouse_quantity ,gp.unit ,gp.trade_count, f.preview_url, ser.server  from package gp\n" +
                 "           join file f on f.uniq_id  =gp.image_id join game g on g.id = gp.game_id " +
                 "left join (SELECT package_id,\n" +
                 "   GROUP_CONCAT(name SEPARATOR ', ') server\n" +
-                "FROM game_server_group gsg   \n" +
+                "FROM country_group gsg   \n" +
                 "GROUP BY package_id)ser on ser.package_id = gp.id where gp.status = 'ACTIVE' and g.status = 'ACTIVE'  order by gp.trade_count desc limit 3";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> GamePackageDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> PackageDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))

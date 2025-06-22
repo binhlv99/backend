@@ -2,18 +2,13 @@ package com.trunggame.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.trunggame.models.Game;
-import com.trunggame.models.SmartTag;
+import com.trunggame.models.Product;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.NonNull;
 
 
-import javax.persistence.Column;
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 
-public class GameInputDTO {
+public class ProductInputDTO {
 
     private Long id;
 
@@ -57,6 +52,6 @@ public class GameInputDTO {
 
     private String companyName;
 
-    private Game.Status status;
+    private Product.Status status;
 
 }

@@ -1,36 +1,26 @@
 package com.trunggame.security.services.impl;
 
 import com.trunggame.dto.BaseResponseDTO;
-import com.trunggame.dto.GameInformationDTO;
-import com.trunggame.dto.GameInputDTO;
-import com.trunggame.dto.GamePackageDTO;
-import com.trunggame.enums.ECommonStatus;
+import com.trunggame.dto.PackageDTO;
 import com.trunggame.models.*;
+import com.trunggame.models.Package;
 import com.trunggame.repository.*;
-import com.trunggame.repository.impl.GameRepositoryCustom;
 import com.trunggame.repository.impl.PackageRepositoryImpl;
-import com.trunggame.security.services.GameService;
 import com.trunggame.security.services.PackageService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PackageServiceImpl implements PackageService {
 
     @Autowired
-    private GameRepository gameRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private FileRepository fileRepository;
@@ -39,7 +29,7 @@ public class PackageServiceImpl implements PackageService {
     private UserRepository userRepository;
 
     @Autowired
-    private GameServerGroupRepository gameServerGroupRepository;
+    private CountryGroupRepository countryGroupRepository;
 
     @Autowired
     private PackageRepository gamePackageRepository;
@@ -49,7 +39,7 @@ public class PackageServiceImpl implements PackageService {
 
     @Override
     @Transactional
-    public BaseResponseDTO<?> createPackage(GamePackageDTO input) {
+    public BaseResponseDTO<?> createPackage(PackageDTO input) {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
@@ -60,7 +50,7 @@ public class PackageServiceImpl implements PackageService {
         var file = fileRepository.findFirstByUniqId(input.getImageId());
 
         // Create game builder
-        var gamePackage = GamePackage.builder()
+        var gamePackage = Package.builder()
                 .name(input.getName())
                 .unit(input.getUnit())
                 .price(input.getPrice())
@@ -70,8 +60,8 @@ public class PackageServiceImpl implements PackageService {
                 .descriptionVi(input.getDescriptionVi())
                 .descriptionEn(input.getDescriptionEn())
                 .gameId(input.getGameId())
-                .status(GamePackage.Status.ACTIVE)
-                .topSale(GamePackage.TopSaleStatus.INACTIVE)
+                .status(Package.Status.ACTIVE)
+                .topSale(Package.TopSaleStatus.INACTIVE)
                 .imageId(input.getImageId())
                 .tradeCount(input.getTradeCount())
                 .createdAt(LocalDateTime.now())
@@ -86,12 +76,12 @@ public class PackageServiceImpl implements PackageService {
 
         // Save game server group
         if (input.getServer().size() > 0) {
-            List<GameServerGroup> gameServerGroups = new ArrayList<>();
+            List<CountryGroup> countryGroups = new ArrayList<>();
             for (var gs : input.getServer()) {
-                gameServerGroups.add(GameServerGroup.builder().gameId(packageEntity.getGameId()).packageId(packageEntity.getId()).name(gs.getName()).createdAt(LocalDateTime.now()).build());
+                countryGroups.add(CountryGroup.builder().gameId(packageEntity.getGameId()).packageId(packageEntity.getId()).name(gs.getName()).createdAt(LocalDateTime.now()).build());
             }
 
-            gameServerGroupRepository.saveAll(gameServerGroups);
+            countryGroupRepository.saveAll(countryGroups);
 
         }
 
@@ -100,10 +90,10 @@ public class PackageServiceImpl implements PackageService {
     }
 
     @Override
-    public BaseResponseDTO<?> updatePackage(GamePackageDTO input) {
-        Optional<GamePackage> oldPackage = gamePackageRepository.findById(input.getId());
+    public BaseResponseDTO<?> updatePackage(PackageDTO input) {
+        Optional<Package> oldPackage = gamePackageRepository.findById(input.getId());
 
-        GamePackage updatedPackage = oldPackage.get();
+        Package updatedPackage = oldPackage.get();
         updatedPackage.setName(input.getName());
         updatedPackage.setPrice(input.getPrice());
         updatedPackage.setUnit(input.getUnit());
@@ -118,38 +108,38 @@ public class PackageServiceImpl implements PackageService {
         updatedPackage.setDeliveryTime(input.getDeliveryTime());
         updatedPackage.setGameId(input.getGameId());
         updatedPackage.setTradeCount(input.getTradeCount());
-        updatedPackage.setTopSale(Objects.equals(input.getTopSale(), "ACTIVE") ?GamePackage.TopSaleStatus.ACTIVE:GamePackage.TopSaleStatus.INACTIVE);
+        updatedPackage.setTopSale(Objects.equals(input.getTopSale(), "ACTIVE") ? Package.TopSaleStatus.ACTIVE: Package.TopSaleStatus.INACTIVE);
         gamePackageRepository.save(updatedPackage);
 
-        List<GameServerGroup> gameServerOld;
-        gameServerOld = gameServerGroupRepository.findAllByPackageId(updatedPackage.getId());
+        List<CountryGroup> gameServerOld;
+        gameServerOld = countryGroupRepository.findAllByPackageId(updatedPackage.getId());
         for (var gs : gameServerOld) {
-            gameServerGroupRepository.deleteById(gs.getId());
+            countryGroupRepository.deleteById(gs.getId());
         }
 
         // Save game server group
         if (input.getServer().size() > 0) {
-            List<GameServerGroup> gameServerNew = new ArrayList<>();
+            List<CountryGroup> gameServerNew = new ArrayList<>();
             for (var gs : input.getServer()) {
-                gameServerNew.add(GameServerGroup.builder().gameId(updatedPackage.getGameId()).packageId(updatedPackage.getId()).name(gs.getName()).createdAt(LocalDateTime.now()).build());
+                gameServerNew.add(CountryGroup.builder().gameId(updatedPackage.getGameId()).packageId(updatedPackage.getId()).name(gs.getName()).createdAt(LocalDateTime.now()).build());
             }
-            gameServerGroupRepository.saveAll(gameServerNew);
+            countryGroupRepository.saveAll(gameServerNew);
         }
 
         return new BaseResponseDTO<>("Success", 200, 200, null);
     }
 
     @Override
-    public List<GamePackageDTO> getAllPackage() {
+    public List<PackageDTO> getAllPackage() {
         return this.packageRepositoryImpl.getAllPackage();
     }
 
-    private void validateInput(GamePackageDTO input) {
+    private void validateInput(PackageDTO input) {
         if (Objects.isNull(input)) {
             throw new RuntimeException("Input to create game is null");
         }
 
-        var categoryOPT = gameRepository.findById(input.getGameId());
+        var categoryOPT = productRepository.findById(input.getGameId());
         if (categoryOPT.isEmpty()) {
             throw new RuntimeException("Game does exist");
         }

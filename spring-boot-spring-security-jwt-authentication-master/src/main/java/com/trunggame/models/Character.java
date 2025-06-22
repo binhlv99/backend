@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "game_character")
-public class GameCharacter {
+@Table(name = "product_character")
+public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,7 +40,7 @@ public class GameCharacter {
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @Column(name = "game_id")
+    @Column(name = "product_id")
     private Long gameId;
 
     @Column(name = "created_at", nullable = false, updatable = false)

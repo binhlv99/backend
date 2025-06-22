@@ -1,15 +1,15 @@
 package com.trunggame.repository;
 
-import com.trunggame.models.GamePackage;
+import com.trunggame.models.Package;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface PackageRepository extends JpaRepository<GamePackage, Long> {
+public interface PackageRepository extends JpaRepository<Package, Long> {
     boolean existsByGameId(String gameId);
 
-    List<GamePackage> findAllByGameId(Long gameId);
+    List<Package> findAllByGameId(Long gameId);
 
 }

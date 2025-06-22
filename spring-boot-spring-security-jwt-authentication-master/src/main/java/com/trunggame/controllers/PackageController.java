@@ -1,20 +1,15 @@
 package com.trunggame.controllers;
 
-import com.trunggame.constant.ConstantUtils;
 import com.trunggame.dto.BaseResponseDTO;
-import com.trunggame.dto.GamePackageDTO;
-import com.trunggame.dto.ServerGroupDTO;
-import com.trunggame.models.Game;
-import com.trunggame.models.GamePackage;
-import com.trunggame.models.GameServerGroup;
-import com.trunggame.models.ServerGroup;
+import com.trunggame.dto.PackageDTO;
+import com.trunggame.models.Package;
+import com.trunggame.models.CountryGroup;
 import com.trunggame.repository.*;
 import com.trunggame.security.services.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +21,10 @@ public class PackageController {
     private PackageRepository packageRepository;
 
     @Autowired
-    private GameServerGroupRepository gameServerGroupRepository;
+    private CountryGroupRepository countryGroupRepository;
 
     @Autowired
-    private GameRepository gameRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private PackageService packageService;
@@ -40,9 +35,9 @@ public class PackageController {
     // Create a new package
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponseDTO<?> createPackage(@RequestBody GamePackageDTO input) {
+    public BaseResponseDTO<?> createPackage(@RequestBody PackageDTO input) {
         // Check if the gameId already exists
-        if (gameRepository.findById(input.getGameId()).isEmpty()) {
+        if (productRepository.findById(input.getGameId()).isEmpty()) {
             return new BaseResponseDTO<>("No content", 403, 403, null);
         }
         // Save the package
@@ -60,9 +55,9 @@ public class PackageController {
     // Read a package by ID
     @GetMapping("/{id}")
     public BaseResponseDTO<?> getPackage(@PathVariable Long id) {
-        Optional<GamePackage> gamePackage = packageRepository.findById(id);
+        Optional<Package> gamePackage = packageRepository.findById(id);
         if (gamePackage.isPresent()) {
-            List<GameServerGroup> server = gameServerGroupRepository.findAllByPackageId(gamePackage.get().getId());
+            List<CountryGroup> server = countryGroupRepository.findAllByPackageId(gamePackage.get().getId());
             var gamePackageObject = gamePackage.get();
             gamePackageObject.setServer(server);
             var file = fileRepository.findFirstByUniqId(gamePackage.get().getImageId());
@@ -78,8 +73,8 @@ public class PackageController {
     // Update a package by ID
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public BaseResponseDTO<?> updatePackage(@PathVariable Long id, @RequestBody GamePackageDTO newPackage) {
-        Optional<GamePackage> oldPackage = packageRepository.findById(id);
+    public BaseResponseDTO<?> updatePackage(@PathVariable Long id, @RequestBody PackageDTO newPackage) {
+        Optional<Package> oldPackage = packageRepository.findById(id);
         if (oldPackage.isPresent()) {
             this.packageService.updatePackage(newPackage);
 
@@ -94,13 +89,13 @@ public class PackageController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public BaseResponseDTO<?> deletePackage(@PathVariable Long id) {
-        Optional<GamePackage> gamePackage = packageRepository.findById(id);
+        Optional<Package> gamePackage = packageRepository.findById(id);
         if (gamePackage.isPresent()) {
             var packageGame = gamePackage.get();
-             if (gamePackage.get().getStatus() == GamePackage.Status.ACTIVE) {
-                packageGame.setStatus(GamePackage.Status.INACTIVE);
+             if (gamePackage.get().getStatus() == Package.Status.ACTIVE) {
+                packageGame.setStatus(Package.Status.INACTIVE);
             } else {
-                packageGame.setStatus(GamePackage.Status.ACTIVE);
+                packageGame.setStatus(Package.Status.ACTIVE);
             }
             packageRepository.save(packageGame);
             return new BaseResponseDTO<>("Success", 200, 200, null);

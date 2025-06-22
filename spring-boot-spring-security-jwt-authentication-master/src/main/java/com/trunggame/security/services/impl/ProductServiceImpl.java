@@ -3,10 +3,10 @@ package com.trunggame.security.services.impl;
 import com.trunggame.dto.*;
 import com.trunggame.models.*;
 import com.trunggame.repository.*;
-import com.trunggame.repository.impl.GameRepositoryCustom;
+import com.trunggame.repository.impl.ProductRepositoryCustom;
 import com.trunggame.repository.impl.PackageRepositoryImpl;
 import com.trunggame.repository.impl.PostRespositoryCustom;
-import com.trunggame.security.services.GameService;
+import com.trunggame.security.services.ProductService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class GameServiceImpl implements GameService {
+public class ProductServiceImpl implements ProductService {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -32,7 +32,7 @@ public class GameServiceImpl implements GameService {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private GameRepository gameRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private FileRepository fileRepository;
@@ -50,10 +50,10 @@ public class GameServiceImpl implements GameService {
     private SmartTagGameRepository smartTagGameRepository;
 
     @Autowired
-    private GameServerGroupRepository gameServerGroupRepository;
+    private CountryGroupRepository countryGroupRepository;
 
     @Autowired
-    private GameRepositoryCustom gameRepositoryCustom;
+    private ProductRepositoryCustom productRepositoryCustom;
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -72,7 +72,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public BaseResponseDTO<?> createGame(GameInputDTO input) {
+    public BaseResponseDTO<?> createGame(ProductInputDTO input) {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
@@ -83,14 +83,14 @@ public class GameServiceImpl implements GameService {
         var file = fileRepository.findFirstByUniqId(input.getImageId());
 
         // Create game builder
-        var game = Game.builder()
+        var game = Product.builder()
                 .name(input.getName())
                 .description(input.getDescription())
                 .categoryId(input.getCategoryId())
                 .imageId(input.getImageId())
                 .thumbnail(input.getImageId())
                 .type(input.getType())
-                .status(Game.Status.ACTIVE)
+                .status(Product.Status.ACTIVE)
                 .companyName(input.getCompanyName())
                 .thumbnail(input.getThumbnail())
                 .contentEn(input.getContentEn())
@@ -102,7 +102,7 @@ public class GameServiceImpl implements GameService {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        var gameEntity = gameRepository.save(game);
+        var gameEntity = productRepository.save(game);
         gameEntity.setPreviewUrl(file.get().getPreviewUrl());
 
         file.get().setOwnerId(game.getId());
@@ -161,12 +161,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public BaseResponseDTO<?> updateGame(GameInputDTO input) {
+    public BaseResponseDTO<?> updateGame(ProductInputDTO input) {
         if (input.getId() == null) {
             return new BaseResponseDTO<>("Id can not be null", 400, 400, null);
         }
 
-        var gameEntity = gameRepository.findById(input.getId());
+        var gameEntity = productRepository.findById(input.getId());
         if (gameEntity.isPresent()) {
             validateInput(input);
 
@@ -198,7 +198,7 @@ public class GameServiceImpl implements GameService {
             gameEntity.get().setYoutubeLink(input.getYoutubeLink());
             gameEntity.get().setDescriptionEn(input.getDescriptionEn());
             gameEntity.get().setStatus(input.getStatus());
-            var gameSaved = gameRepository.saveAndFlush(gameEntity.get());
+            var gameSaved = productRepository.saveAndFlush(gameEntity.get());
             gameSaved.setPreviewUrl(file.get().getPreviewUrl());
 
             file.get().setOwnerId(gameUpdate.getId());
@@ -256,17 +256,17 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<GameInformationDTO> getListGame() {
-        var games = gameRepositoryCustom.getAllInformation();
+    public List<ProductInformationDTO> getListGame() {
+        var games = productRepositoryCustom.getAllInformation();
         for (var game : games) {
 //            var gamePackages = gamePackageRepository.findAllByGameId(game.getId());
 //            game.setGamePackages(gamePackages);
-            List <GamePackageDTO> listPackage = packageRepositoryCustom.getPackageByGameId(game.getId());
+            List <PackageDTO> listPackage = packageRepositoryCustom.getPackageByGameId(game.getId());
             if(listPackage.size()==0){
                 listPackage = new ArrayList<>();
             }
             game.setGamePackages(listPackage);
-            var gameServerGroups = gameServerGroupRepository.findAllByGameId(game.getId());
+            var gameServerGroups = countryGroupRepository.findAllByGameId(game.getId());
             game.setServer(gameServerGroups);
 
             // get game tag
@@ -282,25 +282,25 @@ public class GameServiceImpl implements GameService {
     @Override
     public LoadDataDTO getLoadData() {
 
-        var games = this.gameRepositoryCustom.getActiveGame();
+        var games = this.productRepositoryCustom.getActiveGame();
         for (var game : games) {
-            List <GamePackageDTO> listPackage = packageRepositoryCustom.getPackageByGameId(game.getId());
+            List <PackageDTO> listPackage = packageRepositoryCustom.getPackageByGameId(game.getId());
             if(listPackage.size()==0){
                 listPackage = new ArrayList<>();
             }
             game.setGamePackages(listPackage);
-            var gameServerGroups = gameServerGroupRepository.findAllByGameId(game.getId());
+            var gameServerGroups = countryGroupRepository.findAllByGameId(game.getId());
             game.setServer(gameServerGroups);
         }
-        var newGame = this.gameRepositoryCustom.getNewGamge();
+        var newGame = this.productRepositoryCustom.getNewGamge();
 
         for (var game : newGame) {
-            List <GamePackageDTO> listPackage = packageRepositoryCustom.getPackageByGameId(game.getId());
+            List <PackageDTO> listPackage = packageRepositoryCustom.getPackageByGameId(game.getId());
             if(listPackage.size()==0){
                 listPackage = new ArrayList<>();
             }
             game.setGamePackages(listPackage);
-            var gameServerGroups = gameServerGroupRepository.findAllByGameId(game.getId());
+            var gameServerGroups = countryGroupRepository.findAllByGameId(game.getId());
             game.setServer(gameServerGroups);
         }
 
@@ -317,12 +317,12 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public BaseResponseDTO<?> deleteGame(GameInputDTO orderDTO) {
-        var game = gameRepository.findById(orderDTO.getId());
+    public BaseResponseDTO<?> deleteGame(ProductInputDTO orderDTO) {
+        var game = productRepository.findById(orderDTO.getId());
         if(game.isPresent()) {
             var gameObject = game.get();
             gameObject.setStatus(orderDTO.getStatus());
-            gameRepository.save(gameObject);
+            productRepository.save(gameObject);
             return new BaseResponseDTO<>("Success", 200,200,null);
         }
         return new BaseResponseDTO<>("No content", 400,400,null);
@@ -342,14 +342,14 @@ public class GameServiceImpl implements GameService {
         param.put("limit", pageable.getPageSize());
         param.put("offset", pageable.getOffset());
 
-        var query = entityManager.createNativeQuery(builder.toString(), Game.class);
+        var query = entityManager.createNativeQuery(builder.toString(), Product.class);
         for (Map.Entry<String, Object> item : param.entrySet()) {
             query.setParameter(item.getKey(), item.getValue());
         }
         return query;
     }
 
-    private void validateInput(GameInputDTO input) {
+    private void validateInput(ProductInputDTO input) {
         if (Objects.isNull(input)) {
             throw new RuntimeException("Input to create game is null");
         }

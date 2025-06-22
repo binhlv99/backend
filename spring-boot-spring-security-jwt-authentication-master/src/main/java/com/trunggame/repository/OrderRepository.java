@@ -1,6 +1,6 @@
 package com.trunggame.repository;
 
-import com.trunggame.models.GameOrder;
+import com.trunggame.models.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GameOrderRepository extends JpaRepository<GameOrder, Long> {
-    Page<GameOrder> findAll(Specification<GameOrder> spec, Pageable pageable);
+public interface OrderRepository extends JpaRepository<Order, Long> {
+    Page<Order> findAll(Specification<Order> spec, Pageable pageable);
 
-    Page<GameOrder> findByCustomerId(Long customerId,Pageable pageable);
+    Page<Order> findByCustomerId(Long customerId, Pageable pageable);
 
-    List<GameOrder> findByStatus(String status);
+    List<Order> findByStatus(String status);
 }
