@@ -12,17 +12,17 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "`smart_tag_game`")
+@Table(name = "`shoe_tops`")
 @Entity
-public class SmartTagGame {
+public class ShoeTops {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "smart_tag_id", nullable = false)
-    private Long smartTagId;
+    @Column(name = "shoe_outsoles_id", nullable = false)
+    private Long shoeOutsoleId;
 
     @Column(name = "product_id", nullable = false)
-    private Long gameId;
+    private Long productId;
 
 }

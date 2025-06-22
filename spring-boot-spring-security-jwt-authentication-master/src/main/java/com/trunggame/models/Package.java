@@ -61,7 +61,7 @@ public class Package {
     private String previewUrl;
 
     @Transient
-    private List<CountryGroup> server;
+    private List<Color> server;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

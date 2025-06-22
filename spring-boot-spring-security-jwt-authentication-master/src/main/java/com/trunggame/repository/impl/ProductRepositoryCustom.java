@@ -22,7 +22,7 @@ public class ProductRepositoryCustom {
                         "       s.description," +
                         "       s.status," +
                         "       s.type AS gameType," +
-                        "       s.company_name AS companyName," +
+                        "       s.brand_name AS brandName," +
                         "       s.thumbnail AS thumbnail," +
                         "       s.market_type AS marketType," +
                         "       s.youtube_link AS youtubeLink," +
@@ -58,7 +58,7 @@ public class ProductRepositoryCustom {
                 .categoryId(rs.getLong("categoryId"))
                 .marketType(rs.getString("marketType"))
                 .categoryName(rs.getString("categoryName"))
-                .companyName(rs.getString("companyName"))
+                .brandName(rs.getString("brandName"))
                 .youtubeLink(rs.getString("youtubeLink"))
                 .thumbnailUrl(rs.getString("thumbnail"))
                 .contentEn(rs.getString("contentEn"))
@@ -75,7 +75,7 @@ public class ProductRepositoryCustom {
                         "       s.description," +
                         "       s.status," +
                         "       s.type AS gameType," +
-                        "       s.company_name AS companyName," +
+                        "       s.brand_name AS brandName," +
                         "       s.thumbnail AS thumbnail," +
                         "       s.market_type AS marketType," +
                         "       s.youtube_link AS youtubeLink," +
@@ -111,7 +111,7 @@ public class ProductRepositoryCustom {
                 .categoryId(rs.getLong("categoryId"))
                 .marketType(rs.getString("marketType"))
                 .categoryName(rs.getString("categoryName"))
-                .companyName(rs.getString("companyName"))
+                .brandName(rs.getString("brandName"))
                 .youtubeLink(rs.getString("youtubeLink"))
                 .thumbnailUrl(rs.getString("thumbnail"))
                 .contentEn(rs.getString("contentEn"))
@@ -129,7 +129,7 @@ public class ProductRepositoryCustom {
                         "       s.description," +
                         "       s.status," +
                         "       s.type AS gameType," +
-                        "       s.company_name AS companyName," +
+                        "       s.brand_name AS brandName," +
                         "       s.thumbnail AS thumbnail," +
                         "       s.market_type AS marketType," +
                         "       s.youtube_link AS youtubeLink," +
@@ -166,7 +166,7 @@ public class ProductRepositoryCustom {
                 .categoryId(rs.getLong("categoryId"))
                 .marketType(rs.getString("marketType"))
                 .categoryName(rs.getString("categoryName"))
-                .companyName(rs.getString("companyName"))
+                .brandName(rs.getString("brandName"))
                 .youtubeLink(rs.getString("youtubeLink"))
                 .thumbnailUrl(rs.getString("thumbnail"))
                 .contentEn(rs.getString("contentEn"))

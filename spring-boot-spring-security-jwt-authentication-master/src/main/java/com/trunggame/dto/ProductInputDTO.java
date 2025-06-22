@@ -50,7 +50,7 @@ public class ProductInputDTO {
 
     private String marketType;
 
-    private String companyName;
+    private String brandName;
 
     private Product.Status status;
 

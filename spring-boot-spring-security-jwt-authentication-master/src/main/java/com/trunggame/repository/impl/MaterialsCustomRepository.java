@@ -1,6 +1,6 @@
 package com.trunggame.repository.impl;
 
-import com.trunggame.dto.ServerGroupDTO;
+import com.trunggame.dto.MaterialsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -8,20 +8,20 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ServerGroupCustomRepository {
+public class MaterialsCustomRepository {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public List<ServerGroupDTO> getAllServerGroup() {
+    public List<MaterialsDTO> getAllMaterials() {
 
         String sql =
-                "select sg.id as id, sg.name as name, sg.parent_id as parentId, parentSG.name as parentName from server_group as sg "
-                        + " join server_group as parentSG on sg.parent_id = parentSG.id;";
+                "select sg.id as id, sg.name as name, sg.parent_id as parentId, parentSG.name as parentName from materials as sg "
+                        + " join materials as parentSG on sg.parent_id = parentSG.id;";
 
         System.out.println(sql);
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> ServerGroupDTO.
+        return jdbcTemplate.query(sql, (rs, rowNum) -> MaterialsDTO.
                 builder()
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))

@@ -1,7 +1,7 @@
 package com.trunggame.dto;
 
 
-import com.trunggame.models.CountryGroup;
+import com.trunggame.models.Color;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -27,11 +27,11 @@ public class PackageDTO {
 
     private String serverGroup;
 
-    private List<CountryGroup> server;
+    private List<Color> server;
 
     private String listServer;
 
-    private List<CountryGroup> removeServer;
+    private List<Color> removeServer;
 
     private String attribute;
 

@@ -1,12 +1,12 @@
 package com.trunggame.repository;
 
-import com.trunggame.models.ServerGroup;
+import com.trunggame.models.Materials;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ServerGroupRepository extends JpaRepository<ServerGroup, Long> {
+public interface MaterialsRepository extends JpaRepository<Materials, Long> {
 
-    List<ServerGroup> findAllByIdIn(List<Long> ids);
+    List<Materials> findAllByIdIn(List<Long> ids);
 // hiên tại bỏ vi đang dùng GameServerGroup
 }

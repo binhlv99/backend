@@ -70,7 +70,7 @@ public class PackageRepositoryImpl {
                 "\tjoin file f on f.uniq_id  = gp.image_id join game g on g.id = gp.game_id " +
                 "left join (SELECT package_id,\n" +
                 "   GROUP_CONCAT(name SEPARATOR ', ') server\n" +
-                "FROM country_group gsg   \n" +
+                "FROM color gsg   \n" +
                 "GROUP BY package_id) ser on ser.package_id = gp.id where gp.top_sale = 'ACTIVE' and g.status = 'ACTIVE' ";
 
         System.out.println(sql);
@@ -96,7 +96,7 @@ public class PackageRepositoryImpl {
                 "\tjoin file f on f.uniq_id = gp.image_id join game g on g.id = gp.game_id " +
                 "left join (SELECT package_id,\n" +
                 "   GROUP_CONCAT(name SEPARATOR ', ') server\n" +
-                "FROM country_group gsg   \n" +
+                "FROM color gsg   \n" +
                 "GROUP BY package_id) ser on ser.package_id = gp.id where gp.status = 'ACTIVE' and g.status = 'ACTIVE' and gp.game_id = "+gameId;
 
         System.out.println(sql);
@@ -124,7 +124,7 @@ public class PackageRepositoryImpl {
                 "\tjoin file f on f.uniq_id  =gp.image_id join game g on g.id = gp.game_id" +
                 " left join (SELECT package_id,\n" +
                 "   GROUP_CONCAT(name SEPARATOR ', ') server\n" +
-                "FROM country_group gsg   \n" +
+                "FROM color gsg   \n" +
                 "GROUP BY package_id) ser on ser.package_id = gp.id where gp.status = 'ACTIVE' and g.status = 'ACTIVE' order by gp.created_at desc limit 10";
 
         System.out.println(sql);
@@ -153,7 +153,7 @@ public class PackageRepositoryImpl {
                 "           join file f on f.uniq_id  =gp.image_id join game g on g.id = gp.game_id " +
                 "left join (SELECT package_id,\n" +
                 "   GROUP_CONCAT(name SEPARATOR ', ') server\n" +
-                "FROM country_group gsg   \n" +
+                "FROM color gsg   \n" +
                 "GROUP BY package_id)ser on ser.package_id = gp.id where gp.status = 'ACTIVE' and g.status = 'ACTIVE'  order by gp.trade_count desc limit 3";
 
         System.out.println(sql);

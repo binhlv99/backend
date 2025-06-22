@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServerGroupDTO {
+public class MaterialsDTO {
     private Long id;
     private String name;
     private Long parentId;

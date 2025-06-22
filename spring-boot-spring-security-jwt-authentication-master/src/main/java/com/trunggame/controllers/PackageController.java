@@ -3,7 +3,7 @@ package com.trunggame.controllers;
 import com.trunggame.dto.BaseResponseDTO;
 import com.trunggame.dto.PackageDTO;
 import com.trunggame.models.Package;
-import com.trunggame.models.CountryGroup;
+import com.trunggame.models.Color;
 import com.trunggame.repository.*;
 import com.trunggame.security.services.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class PackageController {
     private PackageRepository packageRepository;
 
     @Autowired
-    private CountryGroupRepository countryGroupRepository;
+    private ColorRepository colorRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -57,7 +57,7 @@ public class PackageController {
     public BaseResponseDTO<?> getPackage(@PathVariable Long id) {
         Optional<Package> gamePackage = packageRepository.findById(id);
         if (gamePackage.isPresent()) {
-            List<CountryGroup> server = countryGroupRepository.findAllByPackageId(gamePackage.get().getId());
+            List<Color> server = colorRepository.findAllByPackageId(gamePackage.get().getId());
             var gamePackageObject = gamePackage.get();
             gamePackageObject.setServer(server);
             var file = fileRepository.findFirstByUniqId(gamePackage.get().getImageId());

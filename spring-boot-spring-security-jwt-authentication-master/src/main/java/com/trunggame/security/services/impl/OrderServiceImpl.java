@@ -44,10 +44,10 @@ public class OrderServiceImpl implements OrderService {
     OrderDetailRepository orderDetailRepository;
 
     @Autowired
-    CountryGroupRepository countryGroupRepository;
+    ColorRepository colorRepository;
 
     @Autowired
-    ServerGroupRepository serverGroupRepository;
+    MaterialsRepository materialsRepository;
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -161,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
             for (var orderDetailEntity : gameOrderDetails) {
                 var orderDetail = new OrderInfoDetailDTO();
                 var game = productRepository.findById(Long.parseLong(orderDetailEntity.getGameId().toString()));
-                var serverGameGroup = countryGroupRepository.findAllByGameId(game.get().getId());
+                var serverGameGroup = colorRepository.findAllByGameId(game.get().getId());
                 var category = categoryRepository.findById(game.get().getCategoryId());
                 var pack = packageRepository.findById(orderDetailEntity.getPackageId());
                 var file = fileRepository.findFirstByUniqId(pack.get().getImageId());

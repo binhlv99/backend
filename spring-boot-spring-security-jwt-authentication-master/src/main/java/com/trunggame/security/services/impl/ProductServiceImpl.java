@@ -44,22 +44,22 @@ public class ProductServiceImpl implements ProductService {
     private UserRepository userRepository;
 
     @Autowired
-    private SmartTagRepository smartTagRepository;
+    private ShoeOutsolesRepository shoeOutsolesRepository;
 
     @Autowired
-    private SmartTagGameRepository smartTagGameRepository;
+    private ShoeTopsRepository shoeTopsRepository;
 
     @Autowired
-    private CountryGroupRepository countryGroupRepository;
+    private ColorRepository colorRepository;
 
     @Autowired
     private ProductRepositoryCustom productRepositoryCustom;
 
     @Autowired
-    private CompanyRepository companyRepository;
+    private BrandRepository brandRepository;
 
     @Autowired
-    private MarketTypeRepository marketTypeRepository;
+    private SizeRepository sizeRepository;
 
     @Autowired
     private PostRepository postRepository;
@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
                 .thumbnail(input.getImageId())
                 .type(input.getType())
                 .status(Product.Status.ACTIVE)
-                .companyName(input.getCompanyName())
+                .brandName(input.getBrandName())
                 .thumbnail(input.getThumbnail())
                 .contentEn(input.getContentEn())
                 .contentVi(input.getContentVi())
@@ -120,17 +120,17 @@ public class ProductServiceImpl implements ProductService {
 //
 //        priceRepository.save(price);
 
+        // Create brand builder
+        var brand = Brand.builder()
+                .name(input.getBrandName()).build();
+
+        brandRepository.save(brand);
+
         // Create company builder
-        var company = Company.builder()
-                .name(input.getCompanyName()).build();
+        var marketType = Size.builder()
+                .name(input.getBrandName()).build();
 
-        companyRepository.save(company);
-
-        // Create company builder
-        var marketType = MarketType.builder()
-                .name(input.getCompanyName()).build();
-
-        marketTypeRepository.save(marketType);
+        sizeRepository.save(marketType);
 
 
         // save tags and game
@@ -139,18 +139,18 @@ public class ProductServiceImpl implements ProductService {
             if (tags.size() > 10) {
                 return new BaseResponseDTO<>("Tag's size is must be smaller than equal 10", 400, 400, null);
             }
-            List<SmartTagGame> smartTagGames = new ArrayList<>();
+            List<ShoeTops> shoeTops = new ArrayList<>();
             for (var tagName : input.getTags()) {
-                var tag = smartTagRepository.findFirstByName(tagName);
+                var tag = shoeOutsolesRepository.findFirstByName(tagName);
                 if (tag.isPresent()) {
-                    smartTagGames.add(SmartTagGame.builder().smartTagId(tag.get().getId()).gameId(gameEntity.getId()).build());
+                    shoeTops.add(ShoeTops.builder().smartTagId(tag.get().getId()).gameId(gameEntity.getId()).build());
                 } else {
                     return new BaseResponseDTO<>("Tag's name does not exist: " + tagName, 400, 400, null);
                 }
             }
 
             // Batch save smart tag game
-            smartTagGameRepository.saveAll(smartTagGames);
+            shoeTopsRepository.saveAll(shoeTops);
 
 
         }
@@ -177,8 +177,8 @@ public class ProductServiceImpl implements ProductService {
             }
 
             // Delete all tags
-            var smartTagGameOpt = smartTagGameRepository.findByGameId(input.getId());
-            smartTagGameRepository.deleteAllById(smartTagGameOpt.get().stream().map(s -> s.getId()).collect(Collectors.toList()));
+            var smartTagGameOpt = shoeTopsRepository.findByGameId(input.getId());
+            shoeTopsRepository.deleteAllById(smartTagGameOpt.get().stream().map(s -> s.getId()).collect(Collectors.toList()));
 
 
             var file = fileRepository.findFirstByUniqId(input.getImageId());
@@ -190,7 +190,7 @@ public class ProductServiceImpl implements ProductService {
             gameEntity.get().setImageId(input.getImageId());
             gameEntity.get().setThumbnail(input.getThumbnail());
             gameEntity.get().setType(input.getType());
-            gameEntity.get().setCompanyName(input.getCompanyName());
+            gameEntity.get().setBrandName(input.getBrandName());
             gameEntity.get().setContentEn(input.getContentEn());
             gameEntity.get().setContentVi(input.getContentVi());
             gameEntity.get().setMarketType(input.getMarketType());
@@ -223,18 +223,18 @@ public class ProductServiceImpl implements ProductService {
                 if (tags.size() > 10) {
                     return new BaseResponseDTO<>("Tag's size is must be smaller than equal 10", 400, 400, null);
                 }
-                List<SmartTagGame> smartTagGames = new ArrayList<>();
+                List<ShoeTops> shoeTops = new ArrayList<>();
                 for (var tagName : input.getTags()) {
-                    var tag = smartTagRepository.findFirstByName(tagName);
+                    var tag = shoeOutsolesRepository.findFirstByName(tagName);
                     if (tag.isPresent()) {
-                        smartTagGames.add(SmartTagGame.builder().smartTagId(tag.get().getId()).gameId(gameSaved.getId()).build());
+                        shoeTops.add(ShoeTops.builder().smartTagId(tag.get().getId()).gameId(gameSaved.getId()).build());
                     } else {
                         return new BaseResponseDTO<>("Tag's name does not exist: " + tagName, 400, 400, null);
                     }
                 }
 
                 // Batch save smart tag game
-                smartTagGameRepository.saveAll(smartTagGames);
+                shoeTopsRepository.saveAll(shoeTops);
             }
 
 //            // update server group
@@ -266,7 +266,7 @@ public class ProductServiceImpl implements ProductService {
                 listPackage = new ArrayList<>();
             }
             game.setGamePackages(listPackage);
-            var gameServerGroups = countryGroupRepository.findAllByGameId(game.getId());
+            var gameServerGroups = colorRepository.findAllByGameId(game.getId());
             game.setServer(gameServerGroups);
 
             // get game tag
@@ -289,7 +289,7 @@ public class ProductServiceImpl implements ProductService {
                 listPackage = new ArrayList<>();
             }
             game.setGamePackages(listPackage);
-            var gameServerGroups = countryGroupRepository.findAllByGameId(game.getId());
+            var gameServerGroups = colorRepository.findAllByGameId(game.getId());
             game.setServer(gameServerGroups);
         }
         var newGame = this.productRepositoryCustom.getNewGamge();
@@ -300,7 +300,7 @@ public class ProductServiceImpl implements ProductService {
                 listPackage = new ArrayList<>();
             }
             game.setGamePackages(listPackage);
-            var gameServerGroups = countryGroupRepository.findAllByGameId(game.getId());
+            var gameServerGroups = colorRepository.findAllByGameId(game.getId());
             game.setServer(gameServerGroups);
         }
 

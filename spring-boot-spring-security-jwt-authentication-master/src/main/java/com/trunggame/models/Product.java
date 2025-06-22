@@ -66,8 +66,8 @@ public class Product {
     @Column(name = "productPriority")
     private String gamePriority;
 
-    @Column(name = "companyName",length = 10000, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
-    private String companyName;
+    @Column(name = "brandName",length = 10000, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    private String brandName;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

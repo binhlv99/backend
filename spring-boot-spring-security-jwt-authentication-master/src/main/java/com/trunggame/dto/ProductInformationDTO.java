@@ -1,6 +1,6 @@
 package com.trunggame.dto;
 
-import com.trunggame.models.CountryGroup;
+import com.trunggame.models.Color;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class ProductInformationDTO {
     private BigDecimal price;
     private BigDecimal promotionPrice;
     private BigDecimal promotionPercent;
-    private String companyName;
+    private String brandName;
     private String marketType;
     private String youtubeLink;
     private String contentEn;
@@ -36,6 +36,6 @@ public class ProductInformationDTO {
     private String gamePriority;
     private List<String> tags;
     private List<PackageDTO> gamePackages;
-    private List<CountryGroup> server;
+    private List<Color> server;
 
 }

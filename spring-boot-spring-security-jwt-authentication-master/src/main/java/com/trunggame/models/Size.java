@@ -7,10 +7,10 @@ import lombok.Builder;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "market_type")
+@Table(name = "size")
 @Builder
 @AllArgsConstructor
-public class MarketType {
+public class Size {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,10 @@ public class MarketType {
     @Column(name = "description",columnDefinition = "VARCHAR(5000) CHARACTER SET utf8")
     private String description;
 
-    public MarketType() {
+    public Size() {
     }
 
-    public MarketType(String name, String description) {
+    public Size(String name, String description) {
         this.name = name;
         this.description = description;
     }

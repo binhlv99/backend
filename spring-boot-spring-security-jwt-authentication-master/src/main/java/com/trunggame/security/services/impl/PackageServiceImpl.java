@@ -29,7 +29,7 @@ public class PackageServiceImpl implements PackageService {
     private UserRepository userRepository;
 
     @Autowired
-    private CountryGroupRepository countryGroupRepository;
+    private ColorRepository colorRepository;
 
     @Autowired
     private PackageRepository gamePackageRepository;
@@ -76,12 +76,12 @@ public class PackageServiceImpl implements PackageService {
 
         // Save game server group
         if (input.getServer().size() > 0) {
-            List<CountryGroup> countryGroups = new ArrayList<>();
+            List<Color> colors = new ArrayList<>();
             for (var gs : input.getServer()) {
-                countryGroups.add(CountryGroup.builder().gameId(packageEntity.getGameId()).packageId(packageEntity.getId()).name(gs.getName()).createdAt(LocalDateTime.now()).build());
+                colors.add(Color.builder().gameId(packageEntity.getGameId()).packageId(packageEntity.getId()).name(gs.getName()).createdAt(LocalDateTime.now()).build());
             }
 
-            countryGroupRepository.saveAll(countryGroups);
+            colorRepository.saveAll(colors);
 
         }
 
@@ -111,19 +111,19 @@ public class PackageServiceImpl implements PackageService {
         updatedPackage.setTopSale(Objects.equals(input.getTopSale(), "ACTIVE") ? Package.TopSaleStatus.ACTIVE: Package.TopSaleStatus.INACTIVE);
         gamePackageRepository.save(updatedPackage);
 
-        List<CountryGroup> gameServerOld;
-        gameServerOld = countryGroupRepository.findAllByPackageId(updatedPackage.getId());
+        List<Color> gameServerOld;
+        gameServerOld = colorRepository.findAllByPackageId(updatedPackage.getId());
         for (var gs : gameServerOld) {
-            countryGroupRepository.deleteById(gs.getId());
+            colorRepository.deleteById(gs.getId());
         }
 
         // Save game server group
         if (input.getServer().size() > 0) {
-            List<CountryGroup> gameServerNew = new ArrayList<>();
+            List<Color> gameServerNew = new ArrayList<>();
             for (var gs : input.getServer()) {
-                gameServerNew.add(CountryGroup.builder().gameId(updatedPackage.getGameId()).packageId(updatedPackage.getId()).name(gs.getName()).createdAt(LocalDateTime.now()).build());
+                gameServerNew.add(Color.builder().gameId(updatedPackage.getGameId()).packageId(updatedPackage.getId()).name(gs.getName()).createdAt(LocalDateTime.now()).build());
             }
-            countryGroupRepository.saveAll(gameServerNew);
+            colorRepository.saveAll(gameServerNew);
         }
 
         return new BaseResponseDTO<>("Success", 200, 200, null);
