@@ -21,7 +21,7 @@ public class Stock {
     private Long id;
 
     @Column(name = "product_id", nullable = false)
-    private Integer gameId;
+    private Integer product_Id;
 
     @Column(name = "quantity",nullable = false)
     private Integer quantity;
@@ -33,5 +33,17 @@ public class Stock {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+//    them colum
+
+    @Column(name = "quantity_remaining")
+    private Integer quantityRemaining;
+
+
+    public enum Status {
+        ACTIVE,
+        INACTIVE
+    }
+
 }
 

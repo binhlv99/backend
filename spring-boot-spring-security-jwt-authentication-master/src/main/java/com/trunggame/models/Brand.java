@@ -38,5 +38,4 @@ public class Brand {
     @Column(name = "description",columnDefinition = "VARCHAR(5000) CHARACTER SET utf8")
     private String description;
 
-
 }

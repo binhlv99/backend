@@ -46,5 +46,10 @@ public class Categories {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+//    them colum
+    @Column(name = "category_code")
+    private String categoryCode;
+
 }
 

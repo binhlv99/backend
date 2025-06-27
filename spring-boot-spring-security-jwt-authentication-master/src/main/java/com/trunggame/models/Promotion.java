@@ -8,21 +8,21 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "product")
+@Table(name = "promotion")
 @Data
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
-    @Column(nullable = false)
-    private String name;
+//    @NonNull
+//    @Column(nullable = false)
+//    private String name;
 
     @Column(name = "description",length = 10000, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
 
@@ -35,21 +35,21 @@ public class Product {
     @Column(nullable = false)
     private Status status = Status.ACTIVE;
 
-    @Column(nullable = false)
-    private String type;
+//    @Column(nullable = false)
+//    private String type;
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @Column(name = "code")
+    private Long code;
 
-    @Column(name = "image_id")
-    private String imageId;
+    @Column(name = "discount_voucher")
+    private String discountVoucher;
 
 
-    @Column(name = "thumbnail")
-    private String thumbnail;
+    @Column(name = "voucher_type")
+    private String voucherType;
 
-    @Column(name = "youtubeLink")
-    private String youtubeLink;
+    @Column(name = "discount_value")
+    private String discountValue;
 
     @Column(name = "content_vi",length = 10000, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String contentVi;
@@ -57,11 +57,11 @@ public class Product {
     @Column(name = "content_en",length = 10000, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String contentEn;
 
-    @Column(name = "marketType")
-    private String marketType;
+    @Column(name = "minimum_order_value")
+    private String minimumOrderValue;
 
-    @Column(name = "productPriority")
-    private String gamePriority;
+    @Column(name = "maximum_discount_value")
+    private String maximumDiscountValue;
 
     @Column(name = "brandName",length = 10000, columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String brandName;
@@ -78,38 +78,23 @@ public class Product {
     private String previewUrl;
 //    thêm colum
 
-    @Column(name = "color_id")
-    private Long colorId;
+    @Column(name = "discount_type")
+    private String discountType;
 
-    @Column(name = "style_id")
-    private Long styleId;
+    @Column(name = "discount_value_type")
+    private String discountValueType;
 
-    @Column(name = "size_id")
-    private Long sizeId;
-
-    @Column(name = "shoe_type_id")
-    private Long shoeTypeId;
-
-    @Column(name = "toe_style_id")
-    private Long toeStyleId;
-
-    @Column(name = "collar_type_id")
-    private Long colorTypeId;
-
-    @Column(name = "sole_id")
-    private Long moleId;
-
-    @Column(name = "material_id")
-    private Long materialId;
-
-    @Column(name = "brand_id")
-    private Long brandId;
+    @Column(name = "expiration_date")
+    private String expirationDate;
 
     @Column(name = "quantity")
     private Long quantity;
 
-    @Column(name = "price")
-    private Float price;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
+    @Column(name = "promotion_name")
+    private String promotionName;
 
     @Column(name = "updated_by")
     private Long updatedBy;

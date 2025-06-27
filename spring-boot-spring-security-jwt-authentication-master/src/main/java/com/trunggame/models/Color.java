@@ -34,4 +34,11 @@ public class Color {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+//    them colum
+
+    @Column(name = "color_name")
+    private String colorName;
+
+    @Column(name = "color_code")
+    private String colorCode;
 }

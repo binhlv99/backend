@@ -87,22 +87,22 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal sum = new BigDecimal("0");
         for (var item : orderInfoDTO.getItems()) {
             sum = sum.add(item.getAmount());
-            var gameOrderDetail = OrderDetail.builder()
-                    .account(item.getAccount())
-                    .gameOrderId(gameOrder.getId())
-                    .characterName(item.getCharacterName())
-                    .serverName(item.getServer())
-                    .loginCode(item.getLoginCode())
-                    .loginType(item.getLoginType())
-                    .password(item.getPassword())
-                    .gameId(item.getGameId())
+            var orderDetail = OrderDetail.builder()
+//                    .account(item.getAccount())
+//                    .gameOrderId(gameOrder.getId())
+//                    .characterName(item.getCharacterName())
+//                    .serverName(item.getServer())
+//                    .loginCode(item.getLoginCode())
+//                    .loginType(item.getLoginType())
+//                    .password(item.getPassword())
+                    .productId(item.getGameId())
                     .amount(item.getAmount())
                     .quantity(item.getQuantity())
                     .price(item.getPrice())
-                    .packageId(item.getPackageId())
+//                    .packageId(item.getPackageId())
                     .createdAt(LocalDateTime.now())
                     .build();
-            orderDetails.add(gameOrderDetail);
+            orderDetails.add(orderDetail);
         }
         orderDetailRepository.saveAll(orderDetails);
         gameOrderEntity.setTotalAmount(sum);
@@ -119,28 +119,19 @@ public class OrderServiceImpl implements OrderService {
         if (gameOrder.isPresent()) {
 
             // delete all old order detail
-            orderDetailRepository.deleteAllByGameOrderId(gameOrder.get().getId());
+            orderDetailRepository.deleteAllByOrderId(gameOrder.get().getId());
 
             // create new game order detail
             List<OrderDetail> orderDetails = new ArrayList<>();
             for (var item : orderInfoDTO.getItems()) {
-                var gameOrderDetail = OrderDetail.builder()
-                        .account(item.getAccount())
-                        .gameOrderId(gameOrder.get().getId())
-                        .characterName(item.getCharacterName())
-                        .serverName(item.getServer())
-                        .loginCode(item.getLoginCode())
-                        .loginType(item.getLoginType())
-                        .password(item.getPassword())
-                        .account(item.getAccount())
-                        .gameId(item.getGameId())
+                var orderDetail = OrderDetail.builder()
+                        .productId(item.getGameId())
                         .amount(item.getAmount())
                         .quantity(item.getQuantity())
                         .price(item.getPrice())
-                        .packageId(item.getPackageId())
                         .createdAt(LocalDateTime.now())
                         .build();
-                orderDetails.add(gameOrderDetail);
+                orderDetails.add(orderDetail);
             }
             orderDetailRepository.saveAll(orderDetails);
 
@@ -153,39 +144,12 @@ public class OrderServiceImpl implements OrderService {
         var orderDetails = new ArrayList<OrderInfoDetailDTO>();
         var gameOrder = orderRepository.findById(id);
         if (gameOrder.isPresent()) {
-            var gameOrderDetails = orderDetailRepository.findAllByGameOrderId(gameOrder.get().getId());
+            var gameOrderDetails = orderDetailRepository.findAllByOrderId(gameOrder.get().getId());
             if (gameOrderDetails.isEmpty()) {
                 return null;
             }
 
-            for (var orderDetailEntity : gameOrderDetails) {
-                var orderDetail = new OrderInfoDetailDTO();
-                var game = productRepository.findById(Long.parseLong(orderDetailEntity.getGameId().toString()));
-                var serverGameGroup = colorRepository.findAllByGameId(game.get().getId());
-                var category = categoryRepository.findById(game.get().getCategoryId());
-                var pack = packageRepository.findById(orderDetailEntity.getPackageId());
-                var file = fileRepository.findFirstByUniqId(pack.get().getImageId());
-                orderDetail.setId(orderDetailEntity.getId());
-                orderDetail.setGameId(game.get().getId());
-                orderDetail.setAPackage(pack.get());
-                orderDetail.setLoginCode(orderDetailEntity.getLoginCode());
-                orderDetail.setLoginType(orderDetailEntity.getLoginType());
-                orderDetail.setQuantity(orderDetailEntity.getQuantity());
-                orderDetail.setAmount(orderDetailEntity.getAmount());
-                orderDetail.setPrice(orderDetailEntity.getPrice());
-                orderDetail.setCharacterName(orderDetailEntity.getCharacterName());
-                orderDetail.setPassword(orderDetailEntity.getPassword());
-                orderDetail.setProduct(game.get());
-                orderDetail.setAccount(orderDetailEntity.getAccount());
-                orderDetail.setServer(orderDetailEntity.getServerName());
-                orderDetail.setStatus(orderDetailEntity.getStatus());
-                orderDetail.setServer(orderDetailEntity.getServerName());
-                orderDetail.setCategories(category.get());
-                orderDetail.setDescription(orderDetailEntity.getDescription());
-                orderDetail.setPreviewUrl(file.get().getPreviewUrl());
-                orderDetails.add(orderDetail);
 
-            }
             var user = userRepository.findById(gameOrder.get().getCustomerId());
             String phone = "";
             String email = "";
@@ -285,7 +249,7 @@ public class OrderServiceImpl implements OrderService {
         var order = orderRepository.findById(getOrderDTO.getOrderId());
         if (order.isPresent()) {
             if (Objects.equals(getOrderDTO.getStatus(), "4")) {
-                List<OrderDetail> listDetail = orderDetailRepository.findAllByGameOrderId(order.get().getId());
+                List<OrderDetail> listDetail = orderDetailRepository.findAllByOrderId(order.get().getId());
                 if (listDetail.size() > 0) {
                     listDetail.forEach(detail -> {
                         var orderDetail = orderDetailRepository.findById(detail.getId());
@@ -310,16 +274,10 @@ public class OrderServiceImpl implements OrderService {
 
         if (orderDetail.isPresent()) {
             var detail = orderDetail.get();
-            detail.setAccount(orderInfoDetailDTO.getAccount());
             detail.setStatus(orderInfoDetailDTO.getStatus());
-            detail.setLoginCode(orderInfoDetailDTO.getLoginCode());
-            detail.setLoginType(orderInfoDetailDTO.getLoginType());
-            detail.setCharacterName(orderInfoDetailDTO.getCharacterName());
             detail.setPrice(orderInfoDetailDTO.getPrice());
             detail.setQuantity(orderInfoDetailDTO.getQuantity());
             detail.setAmount(orderInfoDetailDTO.getAmount());
-            detail.setPassword(orderInfoDetailDTO.getPassword());
-            detail.setServerName(orderInfoDetailDTO.getServer());
             detail.setDescription(orderInfoDetailDTO.getDescription());
             orderDetailRepository.save(detail);
             return orderInfoDetailDTO;

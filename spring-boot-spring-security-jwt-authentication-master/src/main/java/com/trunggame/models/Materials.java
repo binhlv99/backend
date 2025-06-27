@@ -30,4 +30,9 @@ public class Materials {
 
     @Transient
     public String parentName;
+
+//    them colum
+
+    @Column(name = "materials_name")
+    private String materialsName;
 }

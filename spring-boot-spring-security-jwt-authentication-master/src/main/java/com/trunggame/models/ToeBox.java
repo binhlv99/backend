@@ -23,20 +23,11 @@ public class ToeBox {
     @Column(name = "name",columnDefinition = "VARCHAR(5000) CHARACTER SET utf8")
     private String name;
 
-    @Column(name = "address",columnDefinition = "VARCHAR(5000) CHARACTER SET utf8")
-    private String address;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "email_address")
-    private String emailAddress;
-
-    @Column(name = "website")
-    private String website;
-
     @Column(name = "description",columnDefinition = "VARCHAR(5000) CHARACTER SET utf8")
     private String description;
+//them colum
 
+    @Column(name = "toe_style_name")
+    private String toeStyleName;
 
 }

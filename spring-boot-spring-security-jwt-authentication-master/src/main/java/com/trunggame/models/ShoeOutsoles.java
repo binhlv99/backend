@@ -45,4 +45,9 @@ public class ShoeOutsoles {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
+
+//   them colum
+
+    @Column(name = "shoe_outsoles_name")
+    private String shoeOutsolesName;
 }

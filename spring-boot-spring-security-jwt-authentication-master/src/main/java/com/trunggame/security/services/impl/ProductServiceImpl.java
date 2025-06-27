@@ -142,11 +142,11 @@ public class ProductServiceImpl implements ProductService {
             List<ShoeTops> shoeTops = new ArrayList<>();
             for (var tagName : input.getTags()) {
                 var tag = shoeOutsolesRepository.findFirstByName(tagName);
-                if (tag.isPresent()) {
-                    shoeTops.add(ShoeTops.builder().smartTagId(tag.get().getId()).gameId(gameEntity.getId()).build());
-                } else {
-                    return new BaseResponseDTO<>("Tag's name does not exist: " + tagName, 400, 400, null);
-                }
+//                if (tag.isPresent()) {
+//                    shoeTops.add(ShoeTops.builder().smartTagId(tag.get().getId()).gameId(gameEntity.getId()).build());
+//                } else {
+//                    return new BaseResponseDTO<>("Tag's name does not exist: " + tagName, 400, 400, null);
+//                }
             }
 
             // Batch save smart tag game
@@ -226,11 +226,11 @@ public class ProductServiceImpl implements ProductService {
                 List<ShoeTops> shoeTops = new ArrayList<>();
                 for (var tagName : input.getTags()) {
                     var tag = shoeOutsolesRepository.findFirstByName(tagName);
-                    if (tag.isPresent()) {
-                        shoeTops.add(ShoeTops.builder().smartTagId(tag.get().getId()).gameId(gameSaved.getId()).build());
-                    } else {
-                        return new BaseResponseDTO<>("Tag's name does not exist: " + tagName, 400, 400, null);
-                    }
+//                    if (tag.isPresent()) {
+//                        shoeTops.add(ShoeTops.builder().smartTagId(tag.get().getId()).gameId(gameSaved.getId()).build());
+//                    } else {
+//                        return new BaseResponseDTO<>("Tag's name does not exist: " + tagName, 400, 400, null);
+//                    }
                 }
 
                 // Batch save smart tag game

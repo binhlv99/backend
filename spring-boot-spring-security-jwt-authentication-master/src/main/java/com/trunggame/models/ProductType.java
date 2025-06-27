@@ -54,4 +54,8 @@ public class ProductType {
         INACTIVE
     }
 
+//    them colum
+@Column(name = "style_name")
+private String styleName;
+
 }

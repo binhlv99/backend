@@ -19,10 +19,11 @@ public class ShoeTops {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "shoe_outsoles_id", nullable = false)
-    private Long shoeOutsoleId;
+//    them colum
 
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @Column(name = "shoe_tops_name")
+    private String shoeTopsName;
 
+    @Column(name = "description",columnDefinition = "VARCHAR(5000) CHARACTER SET utf8")
+    private String description;
 }

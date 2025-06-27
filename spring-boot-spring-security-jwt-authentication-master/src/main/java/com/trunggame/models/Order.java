@@ -39,5 +39,50 @@ public class Order {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+
+//    them colum
+
+    @Column(name = "promotion_id")
+    private Long promotionId;
+
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "order_code")
+    private Long orderCode;
+
+    @Column(name = "delivery_time")
+    private String deliveryTime;
+
+    @Column(name = "recipient_name")
+    private String recipientName;
+
+    @Column(name = "order_type")
+    private String orderType;
+
+    @Column(name = "ship")
+    private String ship;
+
+    @Column(name = "recipient_email")
+    private String recipientEmail;
+
+    @Column(name = "recipient_phone")
+    private String recipientPhone;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "payment_method")
+    private LocalDateTime paymentMethod;
+
+    @Column(name = "paid_amount")
+    private String paidAmount;
+
+    @Column(name = "payment_date")
+    private String paymentDate;
 }
 

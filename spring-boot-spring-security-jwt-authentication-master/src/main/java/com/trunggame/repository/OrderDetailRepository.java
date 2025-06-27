@@ -10,12 +10,12 @@ import java.util.List;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
-    List<OrderDetail> findAllByGameId(Long gameId);
+    List<OrderDetail> findAllByProductId(Long gameId);
 
-    List<OrderDetail> findAllByGameOrderId(Long gameOrderId);
+    List<OrderDetail> findAllByOrderId(Long gameOrderId);
 
     @Transactional
     @Modifying
-    void deleteAllByGameOrderId(Long gameOrderId);
+    void deleteAllByOrderId(Long gameOrderId);
 
 }

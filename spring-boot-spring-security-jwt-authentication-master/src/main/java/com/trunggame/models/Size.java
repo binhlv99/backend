@@ -53,4 +53,10 @@ public class Size {
     public void setDescription(String description) {
         this.description = description;
     }
+
+//    them colum
+
+    @Column(name = "size_name")
+    private String sizeName;
+
 }
